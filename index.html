@@ -2,7 +2,7 @@
 <html lang="en" dir="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.133.1"><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.134.2"><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="Khagan Khan Karimov">
 <link rel="canonical" href="https://khagankhan.github.io/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://khagankhan.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://khagankhan.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://khagankhan.github.io/favicon-32x32.png">
@@ -57,17 +57,14 @@
         }
 
     </style>
-</noscript>
-  
-
-<meta property="og:title" content="Just In Time" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://khagankhan.github.io/" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Just In Time"/>
-<meta name="twitter:description" content=""/>
+</noscript><meta property="og:url" content="https://khagankhan.github.io/">
+  <meta property="og:site_name" content="Just In Time">
+  <meta property="og:title" content="Just In Time">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Just In Time">
+<meta name="twitter:description" content="">
 
 <script type="application/ld+json">
 {
@@ -76,7 +73,7 @@
   "name": "Just In Time",
   "url": "https://khagankhan.github.io/",
   "description": "",
-  "thumbnailUrl": "https://khagankhan.github.io/favicon.ico",
+  "logo": "https://khagankhan.github.io/favicon.ico",
   "sameAs": [
       "https://www.linkedin.com/in/khagan-karimov-609a8326a/", "https://github.com/khagankhan", "https://x.com/KhaganKarimov", "mailto:khagan.karimov@utah.edu"
   ]
@@ -198,8 +195,20 @@
 </article>
 
 <article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="https://khagankhan.github.io/images/post1/nested-parantheses.jpg" alt="Are we writing in Racket again?">
-</figure>
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Be an LLVM contributor: Writing an optimization pattern for LLVM
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>LLVM’s Optimizations Are Truly Impressive LLVM performs aggressive optimizations. One of my favorites is the Data Structure Elimination. For example, we want to 1) compute the sum of two integers (get_sum function), and 2) select one of the two characters based on a condition argument (get_char function):
+#include &lt;vector&gt; #include &lt;string&gt; using namespace std; int get_sum(int a, int b) { vector&lt;int&gt; vec1; // Create the first vector vec1 vector&lt;int&gt; vec2; // Create the second vector vec2 vec1.push_back(a); // Push the first argument to vec1 vec2.push_back(b); // Push the second argument to vec2 return vec1[0] &#43; vec2[0]; // Return the sum of them } // Create a similar logic for string values char get_char(char a, char b, bool cond) { string str1{a}; string str2{b}; return cond ? str1[0] : str2[0]; } get_sum(int, int): lea eax, [rdi &#43; rsi] ret get_char(char, char, bool): mov eax, edi test edx, edx cmove eax, esi ret For the get_sum function, the compiler takes advantage of the lea instruction for the calculation, and for get_char, it uses cmove which it usually does to avoid potential misprediction penalties. Despite the vector being created on the heap, LLVM is able to optimize both of them away, whereas GCC fails to do so for the vector but succeeds for string values. This is because small strings are stored on the stack (as explained in Raymond Chen’s excellent post), while the vector’s data is immediately allocated on the heap (For strings with a length of 15 characters (16 - 1 for the null character), the string is stored on the stack; beyond 15 characters, it is moved to the heap.)
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-12-08 00:00:00 +0000 UTC'>December 8, 2024</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;Khagan Khan Karimov</footer>
+  <a class="entry-link" aria-label="post link to Be an LLVM contributor: Writing an optimization pattern for LLVM" href="https://khagankhan.github.io/posts/llvm-pass/"></a>
+</article>
+
+<article class="post-entry"> 
   <header class="entry-header">
     <h2 class="entry-hint-parent">Do parentheses matter for better performance?
     </h2>
@@ -207,7 +216,8 @@
   <div class="entry-content">
     <p>Missed optimizations in LLVM The book “Computer Systems: A Programmer’s Perspective” warns the readers: “When in doubt, put in parentheses!”. Despite the authors saying this when talking about precedence issues, it would be applicable to some other cases. If you have ever written in a Lisp-like language you must love them!
 But what would happen if we put some undue parentheses in our code.
-Let us consider the following C function (sum....</p>
+Let us consider the following C function (sum.c):
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-08-29 00:00:00 +0000 UTC'>August 29, 2024</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;Khagan Khan Karimov</footer>
   <a class="entry-link" aria-label="post link to Do parentheses matter for better performance?" href="https://khagankhan.github.io/posts/missed-opt/"></a>
